@@ -1,0 +1,33 @@
+name: RFC proposal
+description: Propose a specification or architectural change
+title: "rfc: "
+labels: ["type: rfc", "status: proposal"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed design
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and rejected approaches
+  - type: textarea
+    id: risks
+    attributes:
+      label: Failure modes, security, privacy, and compatibility risks
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Acceptance and falsification tests
+    validations:
+      required: true

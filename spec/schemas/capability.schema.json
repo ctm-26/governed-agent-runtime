@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/governed-agent-runtime/capability.schema.json",
+  "title": "Capability",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capability_id", "provider", "operation", "side_effect_class", "approval_mode"],
+  "properties": {
+    "schema_version": {"const": "0.1.0-draft"},
+    "capability_id": {"type": "string", "minLength": 1},
+    "provider": {"type": "string", "minLength": 1},
+    "operation": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "input_schema_ref": {"type": "string"},
+    "output_schema_ref": {"type": "string"},
+    "side_effect_class": {"enum": ["read_only", "reversible_write", "irreversible_write", "external_communication", "financial", "security_sensitive", "unknown"]},
+    "required_authority": {"type": "array", "items": {"type": "string"}},
+    "approval_mode": {"enum": ["never", "policy_decides", "always", "manual_only"]},
+    "idempotency_supported": {"type": "boolean"},
+    "verification_methods": {"type": "array", "items": {"type": "string"}},
+    "terms_or_policy_refs": {"type": "array", "items": {"type": "string"}}
+  }
+}

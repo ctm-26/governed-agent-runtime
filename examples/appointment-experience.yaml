@@ -1,0 +1,27 @@
+schema_version: 0.1.0-draft
+experience_id: exp_appointment_001
+world_delta_id: wd_appointment_001
+objective: Record a VA appointment and preparation tasks
+starting_state:
+  source_message_received: true
+  calendar_event_exists: false
+authority_snapshot:
+  email.read: allow
+  calendar.read: allow
+  calendar.write: require_approval
+plan:
+  - extract appointment fields
+  - check calendar conflict
+  - request approval for exact event payload
+  - create event
+  - read event back
+  - create preparation action
+observed_outcome:
+  status: verified_complete
+  event_read_back: true
+user_corrections:
+  - include provider name in title
+lesson_candidate:
+  statement: Include provider name in medical appointment titles when known.
+  scope: medical_appointment_ingestion
+  status: candidate

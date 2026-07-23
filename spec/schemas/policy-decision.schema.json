@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/governed-agent-runtime/policy-decision.schema.json",
+  "title": "PolicyDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "decision_id", "action_id", "decision", "policy_version", "authority_snapshot_digest", "reasons"],
+  "properties": {
+    "schema_version": {"const": "0.1.0-draft"},
+    "decision_id": {"type": "string", "minLength": 1},
+    "action_id": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["allow", "deny", "require_approval", "require_information", "defer"]},
+    "policy_version": {"type": "string", "minLength": 1},
+    "authority_snapshot_digest": {"type": "string", "minLength": 1},
+    "intent_scope_digest": {"type": "string"},
+    "payload_digest": {"type": "string"},
+    "reasons": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "expires_at": {"type": ["string", "null"], "format": "date-time"}
+  }
+}

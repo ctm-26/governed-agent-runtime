@@ -1,0 +1,25 @@
+labels:
+  - name: "type: bug"
+    description: Incorrect, inconsistent, or unsafe behavior
+    color: "D73A4A"
+  - name: "type: research"
+    description: Literature, experiment, benchmark, or research question
+    color: "5319E7"
+  - name: "type: rfc"
+    description: Specification or architecture proposal
+    color: "0052CC"
+  - name: "type: security"
+    description: Public security hardening work only
+    color: "B60205"
+  - name: "status: triage"
+    description: Awaiting initial classification
+    color: "FBCA04"
+  - name: "status: proposal"
+    description: Open proposal under evaluation
+    color: "C5DEF5"
+  - name: "status: blocked"
+    description: Waiting on evidence, dependency, or decision
+    color: "000000"
+  - name: "good first issue"
+    description: Narrow, documented entry point for a new contributor
+    color: "7057FF"

@@ -1,0 +1,31 @@
+name: Research question
+description: Propose a falsifiable question, literature gap, or experiment
+title: "research: "
+labels: ["type: research", "status: triage"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question
+    validations:
+      required: true
+  - type: textarea
+    id: prior
+    attributes:
+      label: Prior work and primary sources
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis and alternatives
+  - type: textarea
+    id: falsification
+    attributes:
+      label: What result would weaken or falsify the hypothesis?
+    validations:
+      required: true
+  - type: textarea
+    id: experiment
+    attributes:
+      label: Proposed experiment and metrics

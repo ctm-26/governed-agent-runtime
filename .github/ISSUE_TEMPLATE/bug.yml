@@ -1,0 +1,31 @@
+name: Bug report
+description: Report incorrect, inconsistent, or unsafe behavior
+title: "bug: "
+labels: ["type: bug", "status: triage"]
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Include versions, inputs, and the smallest reproducible case.
+    validations:
+      required: true
+  - type: dropdown
+    id: security
+    attributes:
+      label: Could this expose data or bypass authority?
+      options: ["No", "Possibly - I will use private vulnerability reporting"]
+    validations:
+      required: true
