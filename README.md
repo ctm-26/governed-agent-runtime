@@ -78,6 +78,23 @@ Every important decision should include:
 
 See [docs/quality-gates.md](docs/quality-gates.md) and the [RFC template](docs/rfcs/0000-template.md).
 
+## Local validation and GitHub bootstrap
+
+Run the dependency-free repository checks and bootstrap state tests before opening a pull request:
+
+```bash
+python3 scripts/check-repo.py
+python3 -m unittest discover -s tests -v
+```
+
+Inspect what the GitHub bootstrap would do without changing local or remote state:
+
+```bash
+scripts/bootstrap-github.sh --dry-run
+```
+
+The bootstrap checks GitHub authentication and workflow permission before repository creation. It reuses an existing repository, matching remote, and local commit; it never force-pushes or replaces a remote, and it refuses to stage changes over an existing local commit. An unborn repository has no snapshot to reuse, so its initial scaffold is staged and committed once. If a push fails, correct the reported authentication, network, or policy issue and rerun the same command to resume.
+
 ## Licensing
 
 Code, specifications, and project documentation are licensed under the [Apache License 2.0](LICENSE). Contributions use Developer Certificate of Origin sign-off. See [CONTRIBUTING.md](CONTRIBUTING.md).

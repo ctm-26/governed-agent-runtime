@@ -23,3 +23,5 @@ jobs:
           persist-credentials: false
       - name: Validate required files and JSON syntax
         run: python3 scripts/check-repo.py
+      - name: Test safe GitHub bootstrap states
+        run: python3 -m unittest discover -s tests -v
