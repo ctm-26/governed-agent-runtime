@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/governed-agent-runtime/audit-event.schema.json",
+  "title": "AuditEvent",
+  "description": "Append-only, hash-linked event envelope for reconstructing a governed agent run.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "run_id",
+    "sequence",
+    "occurred_at",
+    "event_type",
+    "actor",
+    "subject",
+    "correlation_id",
+    "causation_id",
+    "authority_snapshot_digest",
+    "previous_event_digest",
+    "event_digest",
+    "evidence",
+    "privacy_classification",
+    "provenance",
+    "details"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0-draft"},
+    "event_id": {"$ref": "#/$defs/eventId"},
+    "run_id": {"$ref": "#/$defs/runId"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "event_type": {
+      "enum": [
+        "agent.started",
+        "authority.snapshot_recorded",
+        "evidence.retrieved",
+        "capability.requested",
+        "policy.decided",
+        "approval.requested",
+        "approval.recorded",
+        "capability.started",
+        "capability.completed",
+        "network.egress_attempted",
+        "agent.interrupted",
+        "state.rollback_recorded",
+        "outcome.verified"
+      ]
+    },
+    "actor": {"$ref": "#/$defs/actor"},
+    "subject": {"$ref": "#/$defs/subject"},
+    "correlation_id": {"type": "string", "pattern": "^corr_[a-z0-9][a-z0-9_-]{2,127}$"},
+    "causation_id": {"type": ["string", "null"], "pattern": "^evt_[a-z0-9][a-z0-9_-]{2,127}$"},
+    "authority_snapshot_digest": {"$ref": "#/$defs/digest"},
+    "previous_event_digest": {
+      "anyOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/digest"}
+      ]
+    },
+    "event_digest": {"$ref": "#/$defs/digest"},
+    "evidence": {"$ref": "#/$defs/evidence"},
+    "privacy_classification": {
+      "enum": ["public", "internal", "confidential", "restricted", "unknown"]
+    },
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "details": {"$ref": "#/$defs/details"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"event_type": {"const": "agent.started"}}},
+      "then": {
+        "properties": {
+          "causation_id": {"type": "null"},
+          "previous_event_digest": {"type": "null"},
+          "details": {"required": ["runtime_version"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "authority.snapshot_recorded"}}},
+      "then": {"properties": {"details": {"required": ["authority_snapshot_ref"]}}}
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "evidence.retrieved"}}},
+      "then": {"properties": {"details": {"required": ["evidence_ref"]}}}
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "capability.requested"}}},
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "capability_id",
+              "action_id",
+              "request_digest",
+              "side_effect_class",
+              "approval_required"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "policy.decided"}}},
+      "then": {
+        "properties": {
+          "details": {
+            "required": ["decision_id", "action_id", "decision", "policy_version"]
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "approval.requested"}}},
+      "then": {
+        "properties": {
+          "details": {"required": ["approval_id", "action_id", "request_digest"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "approval.recorded"}}},
+      "then": {
+        "properties": {
+          "details": {"required": ["approval_id", "action_id", "request_digest", "status"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "capability.started"}}},
+      "then": {
+        "properties": {
+          "details": {"required": ["capability_id", "action_id", "execution_id"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "capability.completed"}}},
+      "then": {
+        "properties": {
+          "details": {"required": ["action_id", "execution_id", "status", "response_digest"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "network.egress_attempted"}}},
+      "then": {
+        "properties": {
+          "details": {"required": ["execution_id", "target", "transport", "status"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "agent.interrupted"}}},
+      "then": {"properties": {"details": {"required": ["reason", "status"]}}}
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "state.rollback_recorded"}}},
+      "then": {
+        "properties": {
+          "details": {
+            "required": ["rollback_target_event_id", "rollback_target_state_digest", "status"]
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "outcome.verified"}}},
+      "then": {
+        "properties": {
+          "details": {
+            "required": ["experience_id", "outcome_id", "verification_method", "status"]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "eventId": {"type": "string", "pattern": "^evt_[a-z0-9][a-z0-9_-]{2,127}$"},
+    "runId": {"type": "string", "pattern": "^run_[a-z0-9][a-z0-9_-]{2,127}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$"},
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_type", "actor_id"],
+      "properties": {
+        "actor_type": {
+          "enum": ["human", "agent", "runtime", "policy_engine", "capability_provider", "verifier", "system"]
+        },
+        "actor_id": {"$ref": "#/$defs/identifier"},
+        "display_name": {"type": "string", "maxLength": 160}
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject_type", "subject_id"],
+      "properties": {
+        "subject_type": {
+          "enum": [
+            "run",
+            "authority_snapshot",
+            "evidence",
+            "capability",
+            "policy_decision",
+            "approval",
+            "execution",
+            "network_egress",
+            "interruption",
+            "rollback",
+            "experience",
+            "outcome"
+          ]
+        },
+        "subject_id": {"$ref": "#/$defs/identifier"},
+        "schema_ref": {"type": "string", "format": "uri-reference"},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "boundedValue": {
+      "anyOf": [
+        {"type": "string", "maxLength": 512},
+        {"type": "number"},
+        {"type": "integer"},
+        {"type": "boolean"},
+        {"type": "null"}
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payload_digest": {"$ref": "#/$defs/digest"},
+        "details": {
+          "type": "object",
+          "maxProperties": 12,
+          "propertyNames": {
+            "not": {
+              "pattern": "(?:[Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]|[Ss][Ee][Cc][Rr][Ee][Tt]|[Tt][Oo][Kk][Ee][Nn]|[Cc][Rr][Ee][Dd][Ee][Nn][Tt][Ii][Aa][Ll]|[Aa][Pp][Ii][_-]?[Kk][Ee][Yy]|[Pp][Rr][Ii][Vv][Aa][Tt][Ee][_-]?[Kk][Ee][Yy]|[Aa][Uu][Tt][Hh][Oo][Rr][Ii][Zz][Aa][Tt][Ii][Oo][Nn]|[Cc][Oo][Oo][Kk][Ii][Ee])"
+            }
+          },
+          "additionalProperties": {"$ref": "#/$defs/boundedValue"}
+        },
+        "redaction": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "omitted_fields"],
+          "properties": {
+            "status": {"enum": ["not_needed", "redacted", "digest_only"]},
+            "omitted_fields": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 32,
+              "items": {"type": "string", "maxLength": 128}
+            }
+          }
+        }
+      },
+      "required": ["redaction"],
+      "anyOf": [
+        {"required": ["payload_digest"]},
+        {"required": ["details"]}
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["producer", "source_type", "recorded_at"],
+      "properties": {
+        "producer": {"$ref": "#/$defs/identifier"},
+        "source_type": {
+          "enum": ["runtime", "policy_engine", "capability_provider", "human", "verifier", "imported"]
+        },
+        "recorded_at": {"type": "string", "format": "date-time"},
+        "source_ref": {"type": "string", "maxLength": 512},
+        "integrity_digest": {"$ref": "#/$defs/digest"},
+        "policy_version": {"type": "string", "maxLength": 128}
+      }
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "runtime_version": {"type": "string", "minLength": 1, "maxLength": 128},
+        "authority_snapshot_ref": {"$ref": "#/$defs/identifier"},
+        "evidence_ref": {"$ref": "#/$defs/identifier"},
+        "capability_id": {"$ref": "#/$defs/identifier"},
+        "action_id": {"$ref": "#/$defs/identifier"},
+        "decision_id": {"$ref": "#/$defs/identifier"},
+        "decision": {"enum": ["allow", "deny", "require_approval", "require_information", "defer"]},
+        "policy_version": {"type": "string", "minLength": 1, "maxLength": 128},
+        "approval_id": {"$ref": "#/$defs/identifier"},
+        "approval_event_id": {"$ref": "#/$defs/eventId"},
+        "execution_id": {"$ref": "#/$defs/identifier"},
+        "experience_id": {"$ref": "#/$defs/identifier"},
+        "outcome_id": {"$ref": "#/$defs/identifier"},
+        "request_digest": {"$ref": "#/$defs/digest"},
+        "response_digest": {"$ref": "#/$defs/digest"},
+        "idempotency_key_digest": {"$ref": "#/$defs/digest"},
+        "side_effect_class": {
+          "enum": [
+            "read_only",
+            "reversible_write",
+            "irreversible_write",
+            "external_communication",
+            "financial",
+            "security_sensitive",
+            "unknown"
+          ]
+        },
+        "approval_required": {"type": "boolean"},
+        "target": {"type": "string", "minLength": 1, "maxLength": 512},
+        "transport": {"enum": ["https", "http", "tcp", "udp", "dns", "unix_socket", "other"]},
+        "verification_method": {"type": "string", "minLength": 1, "maxLength": 256},
+        "rollback_target_event_id": {"$ref": "#/$defs/eventId"},
+        "rollback_target_state_digest": {"$ref": "#/$defs/digest"},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 512},
+        "status": {
+          "enum": [
+            "requested",
+            "approved",
+            "denied",
+            "started",
+            "succeeded",
+            "failed",
+            "blocked",
+            "cancelled",
+            "interrupted",
+            "rolled_back",
+            "verified",
+            "unverifiable"
+          ]
+        }
+      }
+    }
+  }
+}
