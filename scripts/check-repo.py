@@ -19,6 +19,10 @@ REQUIRED = [
     "docs/project-charter.md",
     "docs/quality-gates.md",
     "docs/threat-model.md",
+    "docs/rfcs/0001-audit-event-contract.md",
+    "spec/schemas/audit-event.schema.json",
+    "examples/audit-event-sequence.jsonl",
+    "tests/test_audit_event_contract.py",
 ]
 
 
@@ -33,6 +37,27 @@ def main() -> int:
             json.loads(path.read_text(encoding="utf-8"))
         except Exception as exc:  # noqa: BLE001
             errors.append(f"invalid JSON in {path.relative_to(ROOT)}: {exc}")
+
+    sequence_path = ROOT / "examples" / "audit-event-sequence.jsonl"
+    if sequence_path.is_file():
+        for line_number, raw in enumerate(
+            sequence_path.read_text(encoding="utf-8").splitlines(), 1
+        ):
+            if not raw.strip():
+                continue
+            try:
+                event = json.loads(raw)
+            except Exception as exc:  # noqa: BLE001
+                errors.append(
+                    f"invalid JSONL in {sequence_path.relative_to(ROOT)} "
+                    f"line {line_number}: {exc}"
+                )
+                continue
+            if not isinstance(event, dict):
+                errors.append(
+                    f"JSONL record in {sequence_path.relative_to(ROOT)} "
+                    f"line {line_number} is not an object"
+                )
 
     if errors:
         print("Repository checks failed:", file=sys.stderr)
