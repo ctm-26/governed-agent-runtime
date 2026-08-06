@@ -10,6 +10,8 @@ This slice turns a fixed read-only scenario plus explicitly injected event ident
 
 The contract and hand-authored example already define a valid audit sequence. This emitter proves that a tiny executable producer can generate the same evidence chain without adding a model, provider integration, network path, database, or authority-management surface.
 
+Audit events are evidence records, not authority records. The emitter consumes a digest-bound authority snapshot and cannot create, replace, or widen it.
+
 ### Run it
 
 ```bash
