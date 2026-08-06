@@ -1,0 +1,48 @@
+{
+  "scenario": {
+    "runtime_version": "0.1.0-draft",
+    "run_id": "run_read_open_issues_001",
+    "correlation_id": "corr_read_open_issues_001",
+    "authority_snapshot_ref": "authority.snapshot.readonly.001",
+    "authority_snapshot_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "evidence_ref": "evidence.issue.query.001",
+    "evidence_source": "synthetic_repository_index",
+    "repository": "ctm-26/governed-agent-runtime",
+    "capability_id": "capability.github.list_issues",
+    "operation": "list_issues",
+    "action_id": "action.list_open_issues.001",
+    "request_digest": "sha256:ed354138cde0e3cea0a6882fb40fc41df63c9726c2e852bde2b79612e947387f",
+    "decision_id": "decision.readonly.allow.001",
+    "decision": "allow",
+    "decision_reason_code": "authority_and_scope_match",
+    "policy_version": "policy.fixture.001",
+    "execution_id": "execution.list_issues.001",
+    "response_digest": "sha256:ddb20fba4a0a9283b9b1eba446becfe1041849c5fd4f21d1b1e7aff7dad2a08e",
+    "result_count": 1,
+    "experience_id": "experience.read_open_issues.001",
+    "outcome_id": "outcome.issue_list.001",
+    "verification_method": "deterministic fixture equality",
+    "expected_issue": 2,
+    "observed_issue": 2
+  },
+  "event_ids": {
+    "agent_started": "evt_agent_started_001",
+    "authority_snapshot_recorded": "evt_authority_snapshot_001",
+    "evidence_retrieved": "evt_evidence_retrieved_001",
+    "capability_requested": "evt_capability_requested_001",
+    "policy_decided": "evt_policy_decided_001",
+    "capability_started": "evt_capability_started_001",
+    "capability_completed": "evt_capability_completed_001",
+    "outcome_verified": "evt_outcome_verified_001"
+  },
+  "occurred_at": {
+    "agent_started": "2026-07-30T19:00:00Z",
+    "authority_snapshot_recorded": "2026-07-30T19:00:01Z",
+    "evidence_retrieved": "2026-07-30T19:00:02Z",
+    "capability_requested": "2026-07-30T19:00:03Z",
+    "policy_decided": "2026-07-30T19:00:04Z",
+    "capability_started": "2026-07-30T19:00:05Z",
+    "capability_completed": "2026-07-30T19:00:06Z",
+    "outcome_verified": "2026-07-30T19:00:07Z"
+  }
+}
