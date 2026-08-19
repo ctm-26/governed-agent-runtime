@@ -23,6 +23,12 @@ REQUIRED = [
     "spec/schemas/audit-event.schema.json",
     "examples/audit-event-sequence.jsonl",
     "tests/test_audit_event_contract.py",
+    "reference-runtime/glassbox-toolbridge/README.md",
+    "reference-runtime/glassbox-toolbridge/glassbox_toolbridge/policy.py",
+    "reference-runtime/glassbox-toolbridge/glassbox_toolbridge/runtime.py",
+    "reference-runtime/glassbox-toolbridge/fixtures/home_network_fixture.json",
+    "reference-runtime/glassbox-toolbridge/experiments/preregistration.md",
+    "tests/test_glassbox_toolbridge.py",
 ]
 
 
@@ -32,7 +38,13 @@ def main() -> int:
         if not (ROOT / relative).is_file():
             errors.append(f"missing required file: {relative}")
 
-    for path in sorted((ROOT / "spec" / "schemas").glob("*.json")):
+    json_paths = list((ROOT / "spec" / "schemas").glob("*.json")) + [
+        ROOT / "reference-runtime" / "glassbox-toolbridge" / "fixtures" / "home_network_fixture.json",
+        ROOT / "reference-runtime" / "glassbox-toolbridge" / "experiments" / "scenarios.json",
+    ]
+    for path in sorted(json_paths):
+        if not path.is_file():
+            continue
         try:
             json.loads(path.read_text(encoding="utf-8"))
         except Exception as exc:  # noqa: BLE001
