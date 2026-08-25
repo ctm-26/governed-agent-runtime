@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "GlassBox ToolBridge"
+message: "Please cite this software and its versioned engineering brief."
+type: software
+version: 0.1.0
+date-released: 2026-08-19
+authors:
+  - family-names: Moore
+    given-names: Christopher T.
+url: "https://christophertmoore.com/glassbox"
+repository-code: "https://github.com/ctm-26/governed-agent-runtime"
+license: Apache-2.0

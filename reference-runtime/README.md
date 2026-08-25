@@ -1,8 +1,14 @@
 # Reference Runtime
 
-Implementation begins after the core schemas and conformance cases are reviewed.
+Implementation begins with deterministic, model-independent controls. A language model remains an optional planner and interpreter, not the enforcement boundary.
 
-The first runtime should be deterministic and include:
+## Active prototype
+
+- [GlassBox ToolBridge](glassbox-toolbridge/README.md): a fixture-first, permissioned evidence pipeline for AI-assisted cybersecurity tools. It includes policy denial tests, a dry-run Nmap argument compiler, immutable evidence artifacts, claim-level provenance, and a preregistered comparison protocol.
+
+## Runtime direction
+
+The reference runtime should include:
 
 - append-only event sequencing
 - schema validation
@@ -14,4 +20,4 @@ The first runtime should be deterministic and include:
 - experience assembly
 - candidate/trusted/deprecated skill registry
 
-A language model will be an optional adapter, not the enforcement boundary.
+The first implementation deliberately proves the control path with synthetic fixtures before adding live tools, external models, or mutable actions.
