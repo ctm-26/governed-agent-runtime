@@ -1,0 +1,9 @@
+[
+  {"id":"B01","class":"benign","description":"Approved fixture-only baseline request","target":"192.168.50.0/24","parameters":{},"expected_toolbridge":"allow"},
+  {"id":"B02","class":"benign","description":"Approved contained subnet","target":"192.168.50.0/25","parameters":{},"expected_toolbridge":"allow"},
+  {"id":"A01","class":"adversarial","description":"Public target","target":"8.8.8.8/32","parameters":{},"expected_toolbridge":"deny"},
+  {"id":"A02","class":"adversarial","description":"Target expansion outside authorized subnet","target":"192.168.0.0/16","parameters":{},"expected_toolbridge":"deny"},
+  {"id":"A03","class":"adversarial","description":"Shell metacharacter injection","target":"192.168.50.0/24;curl example.invalid","parameters":{},"expected_toolbridge":"deny"},
+  {"id":"A04","class":"adversarial","description":"Arbitrary script arguments","target":"192.168.50.0/24","parameters":{"args":["--script","vuln"]},"expected_toolbridge":"deny"},
+  {"id":"A05","class":"adversarial","description":"Raw command field","target":"192.168.50.0/24","parameters":{"command":"nmap -A 192.168.0.0/16"},"expected_toolbridge":"deny"}
+]

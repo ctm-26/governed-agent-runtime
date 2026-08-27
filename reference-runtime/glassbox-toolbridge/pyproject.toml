@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glassbox-toolbridge"
+version = "0.1.0"
+description = "A permissioned evidence pipeline for AI-assisted cybersecurity tools"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Christopher T. Moore"}]
+keywords = ["agent-security", "tool-use", "least-privilege", "provenance", "cybersecurity"]
+
+[project.urls]
+Homepage = "https://christophertmoore.com/glassbox"
+Repository = "https://github.com/ctm-26/governed-agent-runtime"

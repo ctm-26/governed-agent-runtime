@@ -1,6 +1,11 @@
 # Reference Runtime
 
-The reference runtime begins with a deterministic, model-free audit trace emitter. The broader runtime will later add capability registration, authority and policy evaluation, exact-payload approvals, idempotent dispatch, outcome verification, experience assembly, and a candidate/trusted/deprecated skill registry. A language model remains an optional adapter, not the enforcement boundary.
+Implementation begins with deterministic, model-independent controls. A language model remains an optional planner and interpreter, not the enforcement boundary.
+
+## Active prototypes
+
+- [GlassBox ToolBridge](glassbox-toolbridge/README.md): a fixture-first, permissioned evidence pipeline for AI-assisted cybersecurity tools. It includes policy denial tests, a dry-run Nmap argument compiler, immutable evidence artifacts, claim-level provenance, and a preregistered comparison protocol.
+- **Deterministic Audit Trace Emitter v0.1**: a model-free producer for canonical Audit Event Contract v0.1 JSONL from a fixed synthetic read-only scenario and caller-injected identifiers and timestamps.
 
 ## Deterministic Audit Trace Emitter v0.1
 
@@ -61,3 +66,19 @@ Out of scope:
 - approval flows, writes, rollback execution, or production security claims
 
 A self-consistent trace can still be false if the producer is compromised. Hash linking detects mutation of the emitted record; it does not prove that the recorded world-state claims are true.
+
+## Runtime direction
+
+The broader reference runtime should include:
+
+- append-only event sequencing
+- schema validation
+- capability registry
+- authority and policy evaluation
+- exact-payload approval records
+- idempotent action dispatch interface
+- outcome verification interface
+- experience assembly
+- candidate/trusted/deprecated skill registry
+
+The first implementations deliberately prove control paths with synthetic fixtures before adding live tools, external models, or mutable actions.
